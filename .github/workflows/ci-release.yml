@@ -1,0 +1,123 @@
+name: CI and Release
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  validate:
+    name: Build and test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 10
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Restore
+        run: dotnet restore AvaloniaWorkbench.slnx
+
+      - name: Build
+        run: dotnet build AvaloniaWorkbench.slnx --configuration Release --no-restore
+
+      - name: Test
+        run: dotnet test tests/AvaloniaWorkbench.Tests/AvaloniaWorkbench.Tests.csproj --configuration Release --no-build --logger "console;verbosity=normal"
+
+  package:
+    name: Package ${{ matrix.rid }}
+    needs: validate
+    if: github.event_name != 'pull_request'
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            rid: win-x64
+            archive: AvaloniaWorkbench-win-x64.zip
+          - os: ubuntu-latest
+            rid: linux-x64
+            archive: AvaloniaWorkbench-linux-x64.tar.gz
+          - os: macos-15
+            rid: osx-x64
+            archive: AvaloniaWorkbench-macos-x64.tar.gz
+          - os: macos-15
+            rid: osx-arm64
+            archive: AvaloniaWorkbench-macos-arm64.tar.gz
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 10
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Publish self-contained application
+        shell: pwsh
+        run: >-
+          dotnet publish src/AvaloniaWorkbench/AvaloniaWorkbench.csproj
+          --configuration Release
+          --runtime ${{ matrix.rid }}
+          --self-contained true
+          -p:PublishSingleFile=true
+          -p:IncludeNativeLibrariesForSelfExtract=true
+          -p:DebugType=None
+          -p:DebugSymbols=false
+          --output publish/${{ matrix.rid }}
+
+      - name: Create package
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path release | Out-Null
+          if ("${{ runner.os }}" -eq "Windows") {
+            Compress-Archive -Path "publish/${{ matrix.rid }}/*" -DestinationPath "release/${{ matrix.archive }}" -Force
+          } else {
+            tar -czf "release/${{ matrix.archive }}" -C "publish/${{ matrix.rid }}" .
+          }
+
+      - name: Upload package
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.rid }}
+          path: release/${{ matrix.archive }}
+          if-no-files-found: error
+
+  release:
+    name: Publish v0.1.0
+    needs: package
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download packages
+        uses: actions/download-artifact@v4
+        with:
+          path: release-assets
+          merge-multiple: true
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v0.1.0
+          target_commitish: ${{ github.sha }}
+          name: Avalonia Workbench v0.1.0
+          body: |
+            Avalonia Workbench 的首个演示版本。
+
+            核心内容：
+            - Avalonia 12.1 + .NET 10
+            - 仪表盘、数据实验室、文件工作区、任务中心、UI 实验室与诊断中心
+            - Windows、Linux、macOS 自包含构建
+            - 单元测试与自动发布流程
+          files: release-assets/*
+          fail_on_unmatched_files: true
+          make_latest: true
