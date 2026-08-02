@@ -1,6 +1,7 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:AvaloniaWorkbench.ViewModels"
+             xmlns:model="using:AvaloniaWorkbench.Models"
              x:Class="AvaloniaWorkbench.Views.DashboardView"
              x:DataType="vm:DashboardViewModel">
   <ScrollViewer>
@@ -73,7 +74,7 @@
             <TextBlock Text="最近活动" Classes="section-title" />
             <ItemsControl ItemsSource="{Binding Activities}">
               <ItemsControl.ItemTemplate>
-                <DataTemplate xmlns:model="using:AvaloniaWorkbench.Models" x:DataType="model:ActivityEntry">
+                <DataTemplate x:DataType="model:ActivityEntry">
                   <Grid ColumnDefinitions="14,*" Margin="0,0,0,14">
                     <Border Width="8" Height="8" CornerRadius="4" Background="{DynamicResource AccentFillColorDefaultBrush}" VerticalAlignment="Top" Margin="0,6,0,0" />
                     <StackPanel Grid.Column="1" Spacing="2">
