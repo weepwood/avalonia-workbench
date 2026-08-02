@@ -1,0 +1,1 @@
+触发 Avalonia Workbench 源码展开和构建校验。
