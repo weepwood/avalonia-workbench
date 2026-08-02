@@ -1,6 +1,7 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:AvaloniaWorkbench.ViewModels"
+             xmlns:model="using:AvaloniaWorkbench.Models"
              x:Class="AvaloniaWorkbench.Views.DiagnosticsView"
              x:DataType="vm:DiagnosticsViewModel">
   <Grid Margin="28,0,28,28" RowDefinitions="Auto,*" RowSpacing="12">
@@ -16,7 +17,7 @@
       <ScrollViewer>
         <ItemsControl ItemsSource="{Binding Items}">
           <ItemsControl.ItemTemplate>
-            <DataTemplate xmlns:model="using:AvaloniaWorkbench.Models" x:DataType="model:DiagnosticItem">
+            <DataTemplate x:DataType="model:DiagnosticItem">
               <Grid ColumnDefinitions="210,*" Margin="0,0,0,12">
                 <TextBlock Text="{Binding Name}" FontWeight="SemiBold" />
                 <TextBlock Grid.Column="1" Text="{Binding Value}" TextWrapping="Wrap" Classes="muted" />
