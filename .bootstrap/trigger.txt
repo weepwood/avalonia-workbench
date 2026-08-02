@@ -1,1 +1,1 @@
-第四次触发 Avalonia Workbench 正式构建与单元测试。
+触发 Avalonia Workbench 四平台发布校验。
