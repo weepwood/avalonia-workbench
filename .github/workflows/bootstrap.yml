@@ -1,0 +1,53 @@
+name: Bootstrap full source
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/bootstrap.yml
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  bootstrap:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Rebuild source archive
+        shell: bash
+        run: |
+          cat .bootstrap/chunk-* | base64 --decode > /tmp/avalonia-workbench.tar.gz
+          echo "1dbda20987de38c8a3c37fbd9b3c34d871ba713b8c2241b1fef8f1dd1780fd83  /tmp/avalonia-workbench.tar.gz" | sha256sum --check
+
+      - name: Expand project source
+        shell: bash
+        run: |
+          tar -xzf /tmp/avalonia-workbench.tar.gz -C .
+          sed -i "s/github.event_name == 'push'/github.event_name != 'pull_request'/" .github/workflows/ci-release.yml
+          rm -rf .bootstrap .github/workflows/bootstrap.yml
+
+      - name: Commit complete project
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "实现 Avalonia Workbench v0.1.0"
+          git push origin main
+
+      - name: Trigger build and release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          for attempt in 1 2 3 4 5 6; do
+            if gh workflow run ci-release.yml --ref main; then
+              exit 0
+            fi
+            sleep 10
+          done
+          exit 1
