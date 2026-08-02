@@ -1,6 +1,7 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:AvaloniaWorkbench.ViewModels"
+             xmlns:model="using:AvaloniaWorkbench.Models"
              x:Class="AvaloniaWorkbench.Views.TaskCenterView"
              x:DataType="vm:TaskCenterViewModel">
   <Grid Margin="28,0,28,28" RowDefinitions="Auto,*" RowSpacing="12">
@@ -21,7 +22,7 @@
       <ScrollViewer>
         <ItemsControl ItemsSource="{Binding Tasks}">
           <ItemsControl.ItemTemplate>
-            <DataTemplate xmlns:model="using:AvaloniaWorkbench.Models" x:DataType="model:WorkbenchTask">
+            <DataTemplate x:DataType="model:WorkbenchTask">
               <Border BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
                       BorderThickness="0,0,0,1"
                       Padding="10,12">
