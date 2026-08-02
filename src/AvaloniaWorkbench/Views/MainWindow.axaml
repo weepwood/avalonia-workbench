@@ -85,13 +85,27 @@
         </Border>
 
         <Grid Grid.Row="1">
-          <views:DashboardView IsVisible="{Binding IsDashboard}" DataContext="{Binding Dashboard}" />
-          <views:DataLabView IsVisible="{Binding IsDataLab}" DataContext="{Binding DataLab}" />
-          <views:FileWorkspaceView IsVisible="{Binding IsFileWorkspace}" DataContext="{Binding FileWorkspace}" />
-          <views:TaskCenterView IsVisible="{Binding IsTaskCenter}" DataContext="{Binding TaskCenter}" />
-          <views:ThemeLabView IsVisible="{Binding IsThemeLab}" DataContext="{Binding ThemeLab}" />
-          <views:DiagnosticsView IsVisible="{Binding IsDiagnostics}" DataContext="{Binding Diagnostics}" />
-          <views:SettingsView IsVisible="{Binding IsSettings}" DataContext="{Binding Settings}" />
+          <Grid IsVisible="{Binding IsDashboard}">
+            <views:DashboardView DataContext="{Binding Dashboard}" />
+          </Grid>
+          <Grid IsVisible="{Binding IsDataLab}">
+            <views:DataLabView DataContext="{Binding DataLab}" />
+          </Grid>
+          <Grid IsVisible="{Binding IsFileWorkspace}">
+            <views:FileWorkspaceView DataContext="{Binding FileWorkspace}" />
+          </Grid>
+          <Grid IsVisible="{Binding IsTaskCenter}">
+            <views:TaskCenterView DataContext="{Binding TaskCenter}" />
+          </Grid>
+          <Grid IsVisible="{Binding IsThemeLab}">
+            <views:ThemeLabView DataContext="{Binding ThemeLab}" />
+          </Grid>
+          <Grid IsVisible="{Binding IsDiagnostics}">
+            <views:DiagnosticsView DataContext="{Binding Diagnostics}" />
+          </Grid>
+          <Grid IsVisible="{Binding IsSettings}">
+            <views:SettingsView DataContext="{Binding Settings}" />
+          </Grid>
         </Grid>
       </Grid>
     </Grid>
