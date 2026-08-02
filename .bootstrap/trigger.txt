@@ -1,1 +1,1 @@
-再次触发 Avalonia Workbench 源码展开和构建校验。
+触发 Avalonia Workbench 正式构建与单元测试。
