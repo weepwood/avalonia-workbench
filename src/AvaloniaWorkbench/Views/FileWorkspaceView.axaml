@@ -1,0 +1,42 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:AvaloniaWorkbench.ViewModels"
+             x:Class="AvaloniaWorkbench.Views.FileWorkspaceView"
+             x:DataType="vm:FileWorkspaceViewModel">
+  <Grid Margin="28,0,28,28" RowDefinitions="Auto,Auto,*" RowSpacing="12">
+    <Border Grid.Row="0" Classes="card">
+      <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="10">
+        <StackPanel Spacing="4">
+          <TextBlock Text="{Binding CurrentFolder}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" />
+          <TextBlock Text="{Binding Summary}" Classes="muted" FontSize="12" />
+        </StackPanel>
+        <Button Grid.Column="1" Classes="primary" Content="选择文件夹" Click="SelectFolder_OnClick" />
+        <Button Grid.Column="2" Classes="toolbar" Content="清空" Command="{Binding ClearCommand}" />
+      </Grid>
+    </Border>
+
+    <Grid Grid.Row="1" ColumnDefinitions="*,Auto" ColumnSpacing="12">
+      <TextBox Text="{Binding SearchText}" Watermark="过滤当前目录" />
+      <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+        <ProgressBar IsVisible="{Binding IsBusy}" IsIndeterminate="True" Width="120" />
+        <TextBlock Text="{Binding Message}" Classes="muted" VerticalAlignment="Center" />
+      </StackPanel>
+    </Grid>
+
+    <Border Grid.Row="2" Classes="card" Padding="0" ClipToBounds="True">
+      <DataGrid x:CompileBindings="False" ItemsSource="{Binding Entries}"
+                AutoGenerateColumns="False"
+                IsReadOnly="True"
+                CanUserSortColumns="True"
+                GridLinesVisibility="Horizontal">
+        <DataGrid.Columns>
+          <DataGridTextColumn Header="名称" Binding="{Binding Name}" Width="3*" />
+          <DataGridTextColumn Header="类型" Binding="{Binding Kind}" Width="120" />
+          <DataGridTextColumn Header="大小" Binding="{Binding DisplaySize}" Width="120" />
+          <DataGridTextColumn Header="修改时间" Binding="{Binding ModifiedAt, StringFormat={}{0:yyyy-MM-dd HH:mm}}" Width="180" />
+          <DataGridTextColumn Header="完整路径" Binding="{Binding FullPath}" Width="3*" />
+        </DataGrid.Columns>
+      </DataGrid>
+    </Border>
+  </Grid>
+</UserControl>

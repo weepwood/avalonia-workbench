@@ -1,0 +1,110 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:AvaloniaWorkbench.ViewModels"
+        xmlns:views="using:AvaloniaWorkbench.Views"
+        x:Class="AvaloniaWorkbench.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Title="Avalonia Workbench"
+        Width="1280"
+        Height="820"
+        MinWidth="980"
+        MinHeight="640"
+        WindowStartupLocation="CenterScreen">
+  <Grid RowDefinitions="56,*,30">
+    <Border Grid.Row="0"
+            Background="{DynamicResource LayerFillColorDefaultBrush}"
+            BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
+            BorderThickness="0,0,0,1">
+      <Grid ColumnDefinitions="236,*,Auto" Margin="18,0">
+        <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
+          <Border Width="30" Height="30" CornerRadius="8" Background="{DynamicResource AccentFillColorDefaultBrush}">
+            <TextBlock Text="A" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" />
+          </Border>
+          <TextBlock Text="Avalonia Workbench" FontWeight="SemiBold" VerticalAlignment="Center" />
+        </StackPanel>
+
+        <TextBox Grid.Column="1"
+                 Width="360"
+                 HorizontalAlignment="Center"
+                 Watermark="全局搜索（演示）"
+                 VerticalContentAlignment="Center" />
+
+        <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="12" VerticalAlignment="Center">
+          <Border Padding="10,5" CornerRadius="12" Background="{DynamicResource SubtleFillColorSecondaryBrush}">
+            <TextBlock Text="Avalonia 12.1 · .NET 10" FontSize="12" />
+          </Border>
+          <TextBlock Text="{Binding ClockText}" Classes="muted" VerticalAlignment="Center" />
+        </StackPanel>
+      </Grid>
+    </Border>
+
+    <Grid Grid.Row="1" ColumnDefinitions="236,*">
+      <Border Grid.Column="0"
+              Background="{DynamicResource LayerFillColorAltBrush}"
+              BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
+              BorderThickness="0,0,1,0">
+        <Grid RowDefinitions="Auto,*,Auto">
+          <StackPanel Margin="18,18,18,10" Spacing="4">
+            <TextBlock Text="技术工作台" FontWeight="SemiBold" />
+            <TextBlock Text="跨平台桌面能力演示" Classes="muted" FontSize="12" />
+          </StackPanel>
+
+          <ListBox Grid.Row="1"
+                   Classes="nav-list"
+                   ItemsSource="{Binding NavigationItems}"
+                   SelectedItem="{Binding SelectedNavigation}">
+            <ListBox.ItemTemplate>
+              <DataTemplate x:DataType="models:NavigationItem" xmlns:models="using:AvaloniaWorkbench.Models">
+                <Grid ColumnDefinitions="32,*">
+                  <TextBlock Grid.Column="0" Text="{Binding Glyph}" FontSize="18" VerticalAlignment="Center" />
+                  <StackPanel Grid.Column="1" Spacing="1">
+                    <TextBlock Text="{Binding Title}" FontWeight="Medium" />
+                    <TextBlock Text="{Binding Description}" FontSize="11" Classes="muted" TextTrimming="CharacterEllipsis" />
+                  </StackPanel>
+                </Grid>
+              </DataTemplate>
+            </ListBox.ItemTemplate>
+          </ListBox>
+
+          <Border Grid.Row="2" Margin="12" Classes="card" Padding="12">
+            <StackPanel Spacing="4">
+              <TextBlock Text="桌面优先" FontWeight="SemiBold" />
+              <TextBlock Text="Windows · Linux · macOS" Classes="muted" FontSize="11" />
+            </StackPanel>
+          </Border>
+        </Grid>
+      </Border>
+
+      <Grid Grid.Column="1" RowDefinitions="82,*">
+        <Border Grid.Row="0" Padding="28,18,28,12">
+          <StackPanel Spacing="3">
+            <TextBlock Text="{Binding PageTitle}" Classes="page-title" />
+            <TextBlock Text="{Binding PageDescription}" Classes="muted" />
+          </StackPanel>
+        </Border>
+
+        <Grid Grid.Row="1">
+          <views:DashboardView IsVisible="{Binding IsDashboard}" DataContext="{Binding Dashboard}" />
+          <views:DataLabView IsVisible="{Binding IsDataLab}" DataContext="{Binding DataLab}" />
+          <views:FileWorkspaceView IsVisible="{Binding IsFileWorkspace}" DataContext="{Binding FileWorkspace}" />
+          <views:TaskCenterView IsVisible="{Binding IsTaskCenter}" DataContext="{Binding TaskCenter}" />
+          <views:ThemeLabView IsVisible="{Binding IsThemeLab}" DataContext="{Binding ThemeLab}" />
+          <views:DiagnosticsView IsVisible="{Binding IsDiagnostics}" DataContext="{Binding Diagnostics}" />
+          <views:SettingsView IsVisible="{Binding IsSettings}" DataContext="{Binding Settings}" />
+        </Grid>
+      </Grid>
+    </Grid>
+
+    <Border Grid.Row="2"
+            Background="{DynamicResource LayerFillColorDefaultBrush}"
+            BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
+            BorderThickness="0,1,0,0"
+            Padding="14,0">
+      <Grid ColumnDefinitions="Auto,*,Auto">
+        <TextBlock Text="● 运行正常" Foreground="{DynamicResource SystemFillColorSuccessBrush}" FontSize="12" VerticalAlignment="Center" />
+        <TextBlock Grid.Column="1" Text="本地模式 · 无网络依赖" Classes="muted" FontSize="12" Margin="16,0" VerticalAlignment="Center" />
+        <TextBlock Grid.Column="2" Text="v0.1.0" Classes="muted" FontSize="12" VerticalAlignment="Center" />
+      </Grid>
+    </Border>
+  </Grid>
+</Window>

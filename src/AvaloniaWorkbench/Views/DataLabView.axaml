@@ -1,0 +1,52 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:AvaloniaWorkbench.ViewModels"
+             x:Class="AvaloniaWorkbench.Views.DataLabView"
+             x:DataType="vm:DataLabViewModel">
+  <Grid Margin="28,0,28,28" RowDefinitions="Auto,Auto,*" RowSpacing="12">
+    <Border Grid.Row="0" Classes="card" Padding="14">
+      <Grid ColumnDefinitions="2*,220,Auto,Auto" ColumnSpacing="10">
+        <TextBox Grid.Column="0"
+                 Text="{Binding SearchText}"
+                 Watermark="搜索名称或分类"
+                 VerticalContentAlignment="Center" />
+        <ComboBox Grid.Column="1"
+                  ItemsSource="{Binding StatusOptions}"
+                  SelectedItem="{Binding StatusText}" />
+        <Button Grid.Column="2" Classes="toolbar" Content="重置" Command="{Binding ClearSearchCommand}" />
+        <Button Grid.Column="3" Classes="primary" Content="增加 2,500 条" Command="{Binding GenerateMoreCommand}" />
+      </Grid>
+    </Border>
+
+    <Grid Grid.Row="1" ColumnDefinitions="*,Auto">
+      <TextBlock Text="{Binding ResultSummary}" Classes="muted" VerticalAlignment="Center" />
+      <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8">
+        <Border Padding="10,4" CornerRadius="10" Background="{DynamicResource SubtleFillColorSecondaryBrush}">
+          <TextBlock Text="可排序" FontSize="12" />
+        </Border>
+        <Border Padding="10,4" CornerRadius="10" Background="{DynamicResource SubtleFillColorSecondaryBrush}">
+          <TextBlock Text="行虚拟化" FontSize="12" />
+        </Border>
+      </StackPanel>
+    </Grid>
+
+    <Border Grid.Row="2" Classes="card" Padding="0" ClipToBounds="True">
+      <DataGrid x:CompileBindings="False" ItemsSource="{Binding Records}"
+                AutoGenerateColumns="False"
+                IsReadOnly="True"
+                CanUserSortColumns="True"
+                GridLinesVisibility="Horizontal"
+                HeadersVisibility="All"
+                SelectionMode="Extended">
+        <DataGrid.Columns>
+          <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="80" />
+          <DataGridTextColumn Header="名称" Binding="{Binding Name}" Width="2*" />
+          <DataGridTextColumn Header="分类" Binding="{Binding Category}" Width="*" />
+          <DataGridTextColumn Header="状态" Binding="{Binding Status}" Width="120" />
+          <DataGridTextColumn Header="评分" Binding="{Binding Score}" Width="100" />
+          <DataGridTextColumn Header="更新时间" Binding="{Binding UpdatedAt, StringFormat={}{0:yyyy-MM-dd HH:mm}}" Width="180" />
+        </DataGrid.Columns>
+      </DataGrid>
+    </Border>
+  </Grid>
+</UserControl>

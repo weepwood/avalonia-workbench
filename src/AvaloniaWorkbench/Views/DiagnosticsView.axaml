@@ -1,0 +1,30 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:AvaloniaWorkbench.ViewModels"
+             x:Class="AvaloniaWorkbench.Views.DiagnosticsView"
+             x:DataType="vm:DiagnosticsViewModel">
+  <Grid Margin="28,0,28,28" RowDefinitions="Auto,*" RowSpacing="12">
+    <Grid Grid.Row="0" ColumnDefinitions="*,Auto">
+      <StackPanel Spacing="3">
+        <TextBlock Text="运行环境快照" FontWeight="SemiBold" />
+        <TextBlock Text="{Binding CapturedAt}" Classes="muted" FontSize="12" />
+      </StackPanel>
+      <Button Grid.Column="1" Classes="primary" Content="重新采集" Command="{Binding RefreshCommand}" />
+    </Grid>
+
+    <Border Grid.Row="1" Classes="card">
+      <ScrollViewer>
+        <ItemsControl ItemsSource="{Binding Items}">
+          <ItemsControl.ItemTemplate>
+            <DataTemplate xmlns:model="using:AvaloniaWorkbench.Models" x:DataType="model:DiagnosticItem">
+              <Grid ColumnDefinitions="210,*" Margin="0,0,0,12">
+                <TextBlock Text="{Binding Name}" FontWeight="SemiBold" />
+                <TextBlock Grid.Column="1" Text="{Binding Value}" TextWrapping="Wrap" Classes="muted" />
+              </Grid>
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
+      </ScrollViewer>
+    </Border>
+  </Grid>
+</UserControl>

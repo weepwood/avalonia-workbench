@@ -1,0 +1,43 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:AvaloniaWorkbench.ViewModels"
+             x:Class="AvaloniaWorkbench.Views.SettingsView"
+             x:DataType="vm:SettingsViewModel">
+  <ScrollViewer>
+    <StackPanel Margin="28,0,28,28" Spacing="14" MaxWidth="820" HorizontalAlignment="Left">
+      <Border Classes="card">
+        <StackPanel Spacing="14">
+          <TextBlock Text="常规" Classes="section-title" />
+          <Grid ColumnDefinitions="*,220">
+            <StackPanel Spacing="3">
+              <TextBlock Text="界面语言" FontWeight="Medium" />
+              <TextBlock Text="第一阶段提供中英文结构，默认使用简体中文。" Classes="muted" FontSize="12" />
+            </StackPanel>
+            <ComboBox Grid.Column="1" ItemsSource="{Binding Languages}" SelectedItem="{Binding Language}" />
+          </Grid>
+          <Separator />
+          <ToggleSwitch Content="启动时恢复上次页面" IsChecked="{Binding RestoreLastPage}" />
+          <ToggleSwitch Content="显示底部状态栏" IsChecked="{Binding ShowStatusBar}" />
+          <ToggleSwitch Content="启用界面动画" IsChecked="{Binding EnableAnimations}" />
+        </StackPanel>
+      </Border>
+
+      <Border Classes="card">
+        <StackPanel Spacing="10">
+          <TextBlock Text="数据与隐私" Classes="section-title" />
+          <TextBlock Text="当前版本所有演示数据均在本地内存中生成，不上传文件、目录信息或诊断数据。" TextWrapping="Wrap" />
+          <TextBlock Text="后续增加 SQLite 设置持久化时，数据默认保存在系统的本地应用数据目录。" Classes="muted" TextWrapping="Wrap" />
+        </StackPanel>
+      </Border>
+
+      <Border Classes="card">
+        <StackPanel Spacing="8">
+          <TextBlock Text="关于" Classes="section-title" />
+          <TextBlock Text="Avalonia Workbench v0.1.0" FontWeight="SemiBold" />
+          <TextBlock Text="Avalonia 12.1 · .NET 10 · CommunityToolkit.Mvvm" Classes="muted" />
+          <TextBlock Text="MIT License" Classes="muted" />
+        </StackPanel>
+      </Border>
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

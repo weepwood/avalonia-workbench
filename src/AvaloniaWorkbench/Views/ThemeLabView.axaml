@@ -1,0 +1,76 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:AvaloniaWorkbench.ViewModels"
+             x:Class="AvaloniaWorkbench.Views.ThemeLabView"
+             x:DataType="vm:ThemeLabViewModel">
+  <ScrollViewer>
+    <StackPanel Margin="28,0,28,28" Spacing="16">
+      <Grid ColumnDefinitions="*,*" ColumnSpacing="14">
+        <Border Grid.Column="0" Classes="card">
+          <StackPanel Spacing="14">
+            <TextBlock Text="主题切换" Classes="section-title" />
+            <TextBlock Text="实时切换 Avalonia ThemeVariant，无需重新启动。" Classes="muted" TextWrapping="Wrap" />
+            <StackPanel Orientation="Horizontal" Spacing="10">
+              <Button Content="跟随系统" Command="{Binding SetThemeCommand}" CommandParameter="跟随系统" />
+              <Button Content="浅色" Command="{Binding SetThemeCommand}" CommandParameter="浅色" />
+              <Button Content="深色" Command="{Binding SetThemeCommand}" CommandParameter="深色" />
+            </StackPanel>
+            <TextBlock Text="{Binding SelectedTheme, StringFormat=当前主题：{0}}" />
+          </StackPanel>
+        </Border>
+
+        <Border Grid.Column="1" Classes="card">
+          <StackPanel Spacing="14">
+            <TextBlock Text="布局密度" Classes="section-title" />
+            <ToggleSwitch IsChecked="{Binding CompactMode}" Content="紧凑模式（状态演示）" />
+            <CheckBox Content="启用动画" IsChecked="True" />
+            <CheckBox Content="显示辅助说明" IsChecked="True" />
+            <Slider Minimum="0" Maximum="100" Value="70" />
+          </StackPanel>
+        </Border>
+      </Grid>
+
+      <Border Classes="card">
+        <StackPanel Spacing="16">
+          <TextBlock Text="常用控件" Classes="section-title" />
+          <Grid ColumnDefinitions="*,*,*" ColumnSpacing="18">
+            <StackPanel Grid.Column="0" Spacing="10">
+              <TextBlock Text="输入与选择" FontWeight="SemiBold" />
+              <TextBox Watermark="普通文本输入" />
+              <ComboBox SelectedIndex="0">
+                <ComboBoxItem Content="选项 A" />
+                <ComboBoxItem Content="选项 B" />
+                <ComboBoxItem Content="选项 C" />
+              </ComboBox>
+              <DatePicker />
+            </StackPanel>
+            <StackPanel Grid.Column="1" Spacing="10">
+              <TextBlock Text="操作与状态" FontWeight="SemiBold" />
+              <Button Classes="primary" Content="主要操作" HorizontalAlignment="Stretch" />
+              <Button Content="普通操作" HorizontalAlignment="Stretch" />
+              <ProgressBar Minimum="0" Maximum="100" Value="{Binding SampleProgress}" />
+              <Button Content="推进进度" Command="{Binding IncrementProgressCommand}" />
+            </StackPanel>
+            <StackPanel Grid.Column="2" Spacing="10">
+              <TextBlock Text="开关与选择" FontWeight="SemiBold" />
+              <ToggleSwitch Content="后台同步" IsChecked="True" />
+              <RadioButton Content="标准模式" GroupName="mode" IsChecked="True" />
+              <RadioButton Content="高级模式" GroupName="mode" />
+              <CheckBox Content="保存本次选择" IsChecked="True" />
+            </StackPanel>
+          </Grid>
+        </StackPanel>
+      </Border>
+
+      <Border Classes="card">
+        <StackPanel Spacing="10">
+          <TextBlock Text="信息层级" Classes="section-title" />
+          <TextBlock Text="Avalonia Workbench" FontSize="28" FontWeight="Bold" />
+          <TextBlock Text="用于验证桌面应用的排版、控件、主题和交互一致性。" Classes="muted" />
+          <Separator />
+          <TextBlock Text="这一区域同时用于观察不同平台上的字体渲染、间距和主题资源差异。" TextWrapping="Wrap" />
+        </StackPanel>
+      </Border>
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

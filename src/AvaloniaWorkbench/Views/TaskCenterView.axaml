@@ -1,0 +1,52 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:AvaloniaWorkbench.ViewModels"
+             x:Class="AvaloniaWorkbench.Views.TaskCenterView"
+             x:DataType="vm:TaskCenterViewModel">
+  <Grid Margin="28,0,28,28" RowDefinitions="Auto,*" RowSpacing="12">
+    <Grid Grid.Row="0" ColumnDefinitions="*,Auto,Auto" ColumnSpacing="10">
+      <StackPanel Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
+        <Border Classes="card" Padding="14,9">
+          <TextBlock Text="{Binding ActiveCount, StringFormat=运行中 {0}}" />
+        </Border>
+        <Border Classes="card" Padding="14,9">
+          <TextBlock Text="{Binding CompletedCount, StringFormat=已完成 {0}}" />
+        </Border>
+      </StackPanel>
+      <Button Grid.Column="1" Classes="toolbar" Content="清理已完成" Command="{Binding ClearFinishedCommand}" />
+      <Button Grid.Column="2" Classes="primary" Content="启动模拟任务" Command="{Binding StartTaskCommand}" />
+    </Grid>
+
+    <Border Grid.Row="1" Classes="card" Padding="10">
+      <ScrollViewer>
+        <ItemsControl ItemsSource="{Binding Tasks}">
+          <ItemsControl.ItemTemplate>
+            <DataTemplate xmlns:model="using:AvaloniaWorkbench.Models" x:DataType="model:WorkbenchTask">
+              <Border BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
+                      BorderThickness="0,0,0,1"
+                      Padding="10,12">
+                <Grid ColumnDefinitions="*,130,Auto" ColumnSpacing="16">
+                  <StackPanel Grid.Column="0" Spacing="5">
+                    <TextBlock Text="{Binding Name}" FontWeight="SemiBold" />
+                    <TextBlock Text="{Binding Detail}" Classes="muted" FontSize="12" />
+                    <ProgressBar Classes="task-progress" Minimum="0" Maximum="100" Value="{Binding Progress}" />
+                    <TextBlock Text="{Binding Progress, StringFormat={}{0:0}%}" Classes="muted" FontSize="11" />
+                  </StackPanel>
+                  <StackPanel Grid.Column="1" Spacing="5" VerticalAlignment="Center">
+                    <TextBlock Text="{Binding Status}" FontWeight="Medium" />
+                    <TextBlock Text="{Binding StartedAt, StringFormat={}{0:HH:mm:ss}}" Classes="muted" FontSize="11" />
+                  </StackPanel>
+                  <Button Grid.Column="2"
+                          Content="取消"
+                          IsEnabled="{Binding CanCancel}"
+                          Command="{Binding CancelCommand}"
+                          VerticalAlignment="Center" />
+                </Grid>
+              </Border>
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
+      </ScrollViewer>
+    </Border>
+  </Grid>
+</UserControl>

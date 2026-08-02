@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="src/AvaloniaWorkbench/AvaloniaWorkbench.csproj" />
+  <Project Path="tests/AvaloniaWorkbench.Tests/AvaloniaWorkbench.Tests.csproj" />
+</Solution>
