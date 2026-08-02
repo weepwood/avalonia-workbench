@@ -2,6 +2,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="using:AvaloniaWorkbench.ViewModels"
         xmlns:views="using:AvaloniaWorkbench.Views"
+        xmlns:models="using:AvaloniaWorkbench.Models"
         x:Class="AvaloniaWorkbench.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         Title="Avalonia Workbench"
@@ -26,7 +27,7 @@
         <TextBox Grid.Column="1"
                  Width="360"
                  HorizontalAlignment="Center"
-                 Watermark="全局搜索（演示）"
+                 PlaceholderText="全局搜索（演示）"
                  VerticalContentAlignment="Center" />
 
         <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="12" VerticalAlignment="Center">
@@ -54,7 +55,7 @@
                    ItemsSource="{Binding NavigationItems}"
                    SelectedItem="{Binding SelectedNavigation}">
             <ListBox.ItemTemplate>
-              <DataTemplate x:DataType="models:NavigationItem" xmlns:models="using:AvaloniaWorkbench.Models">
+              <DataTemplate x:DataType="models:NavigationItem">
                 <Grid ColumnDefinitions="32,*">
                   <TextBlock Grid.Column="0" Text="{Binding Glyph}" FontSize="18" VerticalAlignment="Center" />
                   <StackPanel Grid.Column="1" Spacing="1">
